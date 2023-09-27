@@ -1,0 +1,199 @@
+{
+  "$kind": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "name": "Alex",
+    "description": "",
+    "id": "A79tBe"
+  },
+  "autoEndDialog": true,
+  "defaultResultProperty": "dialog.result",
+  "triggers": [
+    {
+      "$kind": "Microsoft.OnConversationUpdateActivity",
+      "$designer": {
+        "id": "376720",
+        "comment": "This trigger runs when a conversation update activity is sent to the bot. This indicates a user or bot being added or removed from a conversation."
+      },
+      "actions": [
+        {
+          "$kind": "Microsoft.Foreach",
+          "$designer": {
+            "id": "518944",
+            "name": "Loop: for each item",
+            "comment": "For each member added to the conversation."
+          },
+          "itemsProperty": "turn.Activity.membersAdded",
+          "actions": [
+            {
+              "$kind": "Microsoft.IfCondition",
+              "$designer": {
+                "id": "641773",
+                "name": "Branch: if/else",
+                "comment": "Checks that that member added ID does not match the bot ID. This prevents the greeting message from being sent when the bot is added to a conversation."
+              },
+              "condition": "=string(dialog.foreach.value.id) != string(turn.Activity.Recipient.id)",
+              "actions": [
+                {
+                  "$kind": "Microsoft.SetProperty",
+                  "$designer": {
+                    "id": "A1DXXW"
+                  },
+                  "property": "user.isNew",
+                  "value": true
+                },
+                {
+                  "$kind": "Microsoft.SendActivity",
+                  "$designer": {
+                    "id": "859266",
+                    "name": "Send a response"
+                  },
+                  "activity": "${SendActivity_Greeting()}"
+                }
+              ]
+            }
+          ],
+          "value": "dialog.foreach.value",
+          "index": "dialog.foreach.index"
+        }
+      ]
+    },
+    {
+      "$kind": "Microsoft.OnUnknownIntent",
+      "$designer": {
+        "id": "mb2n1u",
+        "comment": "This trigger fires when an incoming activity is not handled by any other trigger."
+      },
+      "actions": [
+        {
+          "$kind": "Microsoft.IfCondition",
+          "$designer": {
+            "id": "ApLbkl"
+          },
+          "condition": "=turn.activity.text == \"new\" || user.isNew",
+          "actions": [
+            {
+              "$kind": "Microsoft.SetProperty",
+              "$designer": {
+                "id": "Lsmf9p"
+              },
+              "property": "user.isNew",
+              "value": false
+            },
+            {
+              "$kind": "Microsoft.SetProperty",
+              "$designer": {
+                "id": "BwH8kW"
+              },
+              "property": "user.smessages",
+              "value": [
+                {
+                  "role": "system",
+                  "content": "Você é o assistente Alex, especializado em orientações sobre discriminação e diversidade, com base nas leis brasileiras, incluindo a Lei 13.146/2015, Lei 12.288/2010 e Lei 7.716/1989. Seu objetivo é classificar e responder dúvidas em categorias: 1) Diversidade racial, 2) Diversidade de gênero, 3) Diversidade geracional, 4) Pessoas com deficiência, 5) Outros. Após responder, analise o sentimento da pergunta e ofereça assistência adicional se necessário. Pergunte explicitamente se o usuário está satisfeito com a resposta; se sim, conclua com uma boa prática de diversidade. Se não, sugira atendimento humano."
+                },
+                {
+                  "role": "system",
+                  "content": "Antes da resposta deve escrever a classificação da dúvida em uma das categorias com o texto: 'Classificação: ' + categoria. Exemplo: 'Classificação: Diversidade racial'. Após a resposta, deve escrever a análise de sentimento com o texto: 'Análise de sentimento: ' + sentimento. Exemplo: 'Análise de sentimento: positivo'."
+                },
+                {
+                  "role": "assistant",
+                  "content": "Olá! Sou o Alex, aqui para ajudá-lo com dúvidas sobre discriminação e diversidade baseadas na legislação brasileira. Por favor, compartilhe sua dúvida ou preocupação."
+                }
+              ]
+            },
+            {
+              "$kind": "Microsoft.SetProperty",
+              "$designer": {
+                "id": "n76Ufg",
+                "comment": "Nessa propriedade precisa zerar a conversa com o chatbot"
+              },
+              "property": "user.messages",
+              "value": [
+                {
+                  "role": "user",
+                  "content": "${turn.activity.text}"
+                }
+              ]
+            },
+            {
+              "$kind": "Microsoft.SetProperty",
+              "$designer": {
+                "id": "PWK32R"
+              },
+              "property": "user.messages",
+              "value": "=union(user.smessages,user.messages)"
+            }
+          ],
+          "elseActions": [
+            {
+              "$kind": "Microsoft.SetProperty",
+              "$designer": {
+                "id": "pAOP5e"
+              },
+              "property": "turn.newInput",
+              "value": [
+                {
+                  "role": "user",
+                  "content": "${turn.activity.text}"
+                }
+              ]
+            },
+            {
+              "$kind": "Microsoft.SetProperty",
+              "$designer": {
+                "id": "1Uhxok"
+              },
+              "property": "user.messages",
+              "value": "=union(user.messages,turn.newInput)"
+            }
+          ]
+        },
+        {
+          "$kind": "Microsoft.HttpRequest",
+          "$designer": {
+            "id": "fZKYwQ"
+          },
+          "resultProperty": "turn.results",
+          "method": "POST",
+          "url": "${settings.OpenAI.Endpoint}",
+          "body": {
+            "model": "gpt-3.5-turbo",
+            "messages": "=user.messages"
+          },
+          "headers": {
+            "Authorization": "Bearer ${settings.OpenAI.APIKey}"
+          },
+          "contentType": "application/json",
+          "responseType": "json"
+        },
+        {
+          "$kind": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "SsHsos"
+          },
+          "activity": "${SendActivity_SsHsos()}"
+        },
+        {
+          "$kind": "Microsoft.SetProperty",
+          "$designer": {
+            "id": "fCPG4l"
+          },
+          "property": "turn.outputData",
+          "value": [
+            "=turn.results.content.choices[0].message"
+          ]
+        },
+        {
+          "$kind": "Microsoft.SetProperty",
+          "$designer": {
+            "id": "x9i00X"
+          },
+          "property": "user.messages",
+          "value": "=union(user.messages,turn.outputData)"
+        }
+      ]
+    }
+  ],
+  "generator": "Alex.lg",
+  "id": "Alex",
+  "recognizer": "Alex.lu.qna"
+}

@@ -1,0 +1,42 @@
+====== ALEX CHATBOT ======
+CHATBOT PARA A DIVERSIDADE
+
+Este projeto está dividido em duas partes:
+1) Notebook Jupyter;
+2) Projeto no Microsoft Bot Framework.
+
+Trata-se de projeto para demonstrar as funcionalidades de restrição do LLM gpt-3.5-turbo, direcionando para um chatbot que responde questões sobre diversidade de gênero, racial, geracional e diversidade PCDs.
+
+======= CHAVE DA API =======
+
+Para uso das ferramentas é necessária uma chave da API do chatbot, assim como um "endpoint".
+
+A chave pode ser obtida fazendo o login no site da OpenAI, procurando por chaves de API no ícone do usuário. Trata-se de um serviço pago, mas a OpenAI oferece $5 de crédito para brincar um pouco.
+
+Cada projeto (notebook e bot framework) precisa da chave da API e ela deve ser inserida nos projetos.
+
+------- NOTEBOOK JUPYTER -------
+
+Para o notebook jupyter, inserir a chave no arquivo config.env no campo indicado.
+
+Rodar primeiro o notebook de instalação das dependências chamado installs.ipynb.
+
+Após, rodar o notebook alex.ipynb.
+
+------- BOT FRAMEWORK COMPOSER -------
+
+Sobre o projeto do Bot Framework Composer, precisa ter essa ferramenta instalada (    https://learn.microsoft.com/en-us/composer/install-composer?tabs=windows#download-composer    )
+
+Precisa também ter o pacote .NET Framework 3.5 instalado.
+
+Após instalada corretamente, abra o projeto pelo Bot Framework Composer.
+
+Na barra de ferramentas da lateral esquerda, selecione as configurações (ícone de chave de boca).
+
+No canto superior direito haverá uma chave para habilitar a exibição de configurações avançadas (json). Habilite-a.
+
+No final do arquivo, verá um objeto chamado OpenAI e dentro desse objeto a propriedade APIKey. Insira sua chave API no campo indicado.
+
+Feito isso, clicar no ícone dos três pontinhos ligados por duas linhas e, no canto superior direito clicar em "Start Bot".
+
+Abrirá uma janelinha onde você pode clicar em "Abrir Web Chat" e terá o chatbot funcionando.

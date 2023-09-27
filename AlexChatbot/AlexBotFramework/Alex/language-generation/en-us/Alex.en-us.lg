@@ -1,0 +1,21 @@
+[import](common.lg)
+
+# SendActivity_Greeting()
+[Activity
+    Text = ${SendActivity_Greeting_text()}
+]
+
+# SendActivity_Greeting_text()
+- Olá! Sou Alex, aqui para ajudar com dúvidas sobre discriminação e diversidade baseadas na legislação brasileira. Por favor, compartilhe sua dúvida ou preocupação.
+- Oi! Eu sou Alex. Estou aqui para esclarecer suas dúvidas sobre discriminação e diversidade conforme as leis brasileiras. Como posso ajudar?
+- Bem-vindo(a)! Sou Alex, assistente para questões sobre diversidade e discriminação. Baseio-me na legislação brasileira para orientar. O que gostaria de saber?
+- Oi! Me chamo Alex. Se você tem dúvidas relacionadas à diversidade ou enfrenta questões de discriminação, estou aqui para ajudar. Por onde gostaria de começar?
+- Olá! Sou Alex, especialista em temas de diversidade e discriminação no contexto brasileiro. Conte-me sua dúvida ou preocupação, e vou fazer o meu melhor para ajudar.
+- Olá! Aqui é Alex. Posso esclarecer dúvidas sobre discriminação e diversidade com base na legislação do Brasil. Como posso ser útil?
+# SendActivity_SsHsos()
+[Activity
+    Text = ${SendActivity_SsHsos_text()}
+]
+
+# SendActivity_SsHsos_text()
+- ${turn.results.content.choices[0].message.content}
